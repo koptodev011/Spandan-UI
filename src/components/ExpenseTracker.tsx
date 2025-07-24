@@ -135,17 +135,17 @@ export default function ExpenseTracker() {
 
   if (showAddForm) {
     return (
-      <div className="p-6 max-w-2xl mx-auto ml-20 lg:ml-32 mt-4">
+      <div className="p-4 sm:p-6 w-full max-w-2xl mx-auto lg:ml-32 mt-4">
         <div className="flex items-center mb-6">
           <Button 
             variant="ghost" 
             size="icon" 
-            className="mr-4"
+            className="mr-2 sm:mr-4"
             onClick={() => setShowAddForm(false)}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-3xl font-bold text-foreground">New Transaction</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">New Transaction</h1>
         </div>
         
         <Card className="w-full">
@@ -251,56 +251,56 @@ export default function ExpenseTracker() {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto lg:ml-32 mt-16 lg:mt-6">
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center space-x-4">
-          <DollarSign className="h-8 w-8 text-primary" />
+    <div className="p-4 sm:p-6 w-full max-w-7xl mx-auto lg:ml-32 mt-4 sm:mt-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
+        <div className="flex items-center space-x-3 sm:space-x-4">
+          <DollarSign className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Expense Tracker</h1>
-            <p className="text-muted-foreground">Track your clinic income and expenses</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Expense Tracker</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">Track your clinic income and expenses</p>
           </div>
         </div>
         <Button 
           size="lg" 
-          className="h-12 px-6"
+          className="w-full sm:w-auto h-12 px-4 sm:px-6 text-sm sm:text-base"
           onClick={() => setShowAddForm(true)}
         >
-          <Plus className="mr-2 h-5 w-5" />
+          <Plus className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
           Add Transaction
         </Button>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <Card className="h-full">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="text-sm font-medium text-muted-foreground">Total Income</CardTitle>
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">${totalIncome.toFixed(2)}</div>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="text-xl sm:text-2xl font-bold text-green-600">${totalIncome.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">This month</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="h-full">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="text-sm font-medium text-muted-foreground">Total Expenses</CardTitle>
             <TrendingDown className="h-4 w-4 text-red-600" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">${totalExpenses.toFixed(2)}</div>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="text-xl sm:text-2xl font-bold text-red-600">${totalExpenses.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">This month</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="sm:col-span-2 lg:col-span-1 h-full">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 sm:px-6 pt-4 sm:pt-6">
             <CardTitle className="text-sm font-medium text-muted-foreground">Net Profit</CardTitle>
             <DollarSign className="h-4 w-4 text-primary" />
           </CardHeader>
-          <CardContent>
-            <div className={`text-2xl font-bold ${netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+          <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className={`text-xl sm:text-2xl font-bold ${netProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               ${netProfit.toFixed(2)}
             </div>
             <p className="text-xs text-muted-foreground">This month</p>
@@ -310,68 +310,71 @@ export default function ExpenseTracker() {
 
       {/* Filters */}
       <Card className="mb-6">
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>Transactions</CardTitle>
-            <div className="flex space-x-4">
-              <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="january">January</SelectItem>
-                  <SelectItem value="february">February</SelectItem>
-                  <SelectItem value="march">March</SelectItem>
-                </SelectContent>
-              </Select>
-              
-              <Select value={filterType} onValueChange={(value: 'all' | 'income' | 'expense') => setFilterType(value)}>
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="income">Income</SelectItem>
-                  <SelectItem value="expense">Expenses</SelectItem>
-                </SelectContent>
-              </Select>
+        <CardHeader className="p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <CardTitle className="text-lg sm:text-xl">Transactions</CardTitle>
+            <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+              <div className="grid grid-cols-2 gap-3">
+                <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select month" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="january">January</SelectItem>
+                    <SelectItem value="february">February</SelectItem>
+                    <SelectItem value="march">March</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                <Select value={filterType} onValueChange={(value: 'all' | 'income' | 'expense') => setFilterType(value)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Filter type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="income">Income</SelectItem>
+                    <SelectItem value="expense">Expenses</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-              <Button variant="outline" size="icon">
-                <Download className="h-4 w-4" />
+              <Button variant="outline" size="sm" className="h-10 w-full sm:w-auto">
+                <Download className="h-4 w-4 mr-2" />
+                <span className="hidden sm:inline">Export</span>
               </Button>
             </div>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
+        <CardContent className="p-2 sm:p-6">
+          <div className="space-y-3 sm:space-y-4">
             {filteredTransactions.map((transaction) => (
-              <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent/50 transition-colors">
-                <div className="flex items-center space-x-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+              <div key={transaction.id} className="flex items-center justify-between p-3 sm:p-4 border rounded-lg hover:bg-accent/50 transition-colors">
+                <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
+                  <div className={`flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
                     transaction.type === 'income' 
                       ? 'bg-green-100 text-green-600' 
                       : 'bg-red-100 text-red-600'
                   }`}>
                     {transaction.type === 'income' ? (
-                      <TrendingUp className="h-5 w-5" />
+                      <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
                     ) : (
-                      <TrendingDown className="h-5 w-5" />
+                      <TrendingDown className="h-4 w-4 sm:h-5 sm:w-5" />
                     )}
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">{transaction.description}</h4>
-                    <div className="flex items-center space-x-3 mt-1">
-                      <Badge variant="outline" className="text-xs">
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-semibold text-foreground text-sm sm:text-base truncate">{transaction.description}</h4>
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1">
+                      <Badge variant="outline" className="text-[10px] sm:text-xs py-0.5">
                         {transaction.category}
                       </Badge>
-                      <div className="flex items-center text-sm text-muted-foreground">
-                        <Calendar className="mr-1 h-3 w-3" />
-                        {new Date(transaction.date).toLocaleDateString()}
+                      <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
+                        <Calendar className="mr-1 h-3 w-3 flex-shrink-0" />
+                        <span className="truncate">{new Date(transaction.date).toLocaleDateString()}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className={`text-lg font-bold ${
+                <div className={`text-base sm:text-lg font-bold whitespace-nowrap ml-2 ${
                   transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
                 }`}>
                   {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
