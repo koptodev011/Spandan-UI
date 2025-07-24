@@ -27,6 +27,7 @@ interface Patient {
 }
 
 interface PatientDashboardProps {
+  patients: Patient[];
   onStartSession: (patient: Patient) => void;
   onAddPatient: () => void;
   onViewPatient: (patient: Patient) => void;
@@ -34,39 +35,15 @@ interface PatientDashboardProps {
   onDeletePatient: (patientId: string) => void;
 }
 
-const mockPatients: Patient[] = [
-  {
-    id: '1',
-    name: 'Sarah Johnson',
-    age: 29,
-    gender: 'Female',
-    lastSession: '2024-01-15',
-    sessionType: 'remote',
-    totalSessions: 8
-  },
-  {
-    id: '2',
-    name: 'Michael Chen',
-    age: 35,
-    gender: 'Male',
-    lastSession: '2024-01-14',
-    sessionType: 'in-person',
-    totalSessions: 12
-  },
-  {
-    id: '3',
-    name: 'Emma Davis',
-    age: 22,
-    gender: 'Female',
-    lastSession: '2024-01-12',
-    sessionType: 'remote',
-    totalSessions: 5
-  }
-];
-
-export default function PatientDashboard({ onStartSession, onAddPatient, onViewPatient, onEditPatient, onDeletePatient }: PatientDashboardProps) {
+export default function PatientDashboard({ 
+  patients, 
+  onStartSession, 
+  onAddPatient, 
+  onViewPatient, 
+  onEditPatient, 
+  onDeletePatient 
+}: PatientDashboardProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [patients] = useState(mockPatients);
 
   const filteredPatients = patients.filter(patient =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase())

@@ -57,8 +57,36 @@ const Index = () => {
   };
 
   const handleSavePatient = (patientData: any) => {
-    // Save patient logic here
-    console.log('Saving patient:', patientData);
+    if (patientData.id) {
+      // Update existing patient
+      setPatients(prevPatients => 
+        prevPatients.map(patient => {
+          if (patient.id === patientData.id) {
+            return {
+              ...patient,
+              ...patientData,
+              age: Number(patientData.age), // Ensure age is a number
+              // Preserve session data
+              lastSession: patient.lastSession,
+              sessionType: patient.sessionType,
+              totalSessions: patient.totalSessions
+            };
+          }
+          return patient;
+        })
+      );
+    } else {
+      // Add new patient
+      const newPatient = {
+        ...patientData,
+        id: Date.now().toString(),
+        age: Number(patientData.age), // Ensure age is a number
+        totalSessions: 0,
+        lastSession: new Date().toISOString().split('T')[0],
+        sessionType: 'in-person' as const
+      };
+      setPatients(prevPatients => [...prevPatients, newPatient]);
+    }
     setActiveView('patients');
   };
 
@@ -67,14 +95,50 @@ const Index = () => {
     setActiveView('patient-detail');
   };
 
+  const [patients, setPatients] = useState<Patient[]>([
+    {
+      id: '1',
+      name: 'Sarah Johnson',
+      age: 29,
+      gender: 'Female',
+      lastSession: '2024-01-15',
+      sessionType: 'remote',
+      totalSessions: 8
+    },
+    {
+      id: '2',
+      name: 'Michael Chen',
+      age: 35,
+      gender: 'Male',
+      lastSession: '2024-01-14',
+      sessionType: 'in-person',
+      totalSessions: 12
+    },
+    {
+      id: '3',
+      name: 'Emma Davis',
+      age: 22,
+      gender: 'Female',
+      lastSession: '2024-01-12',
+      sessionType: 'remote',
+      totalSessions: 5
+    }
+  ]);
+
   const handleEditPatient = (patient: Patient) => {
     setSelectedPatient(patient);
     setActiveView('edit-patient');
   };
 
   const handleDeletePatient = (patientId: string) => {
-    console.log('Deleting patient:', patientId);
-    // Add delete logic here
+    if (window.confirm('Are you sure you want to delete this patient? This action cannot be undone.')) {
+      setPatients(prevPatients => prevPatients.filter(patient => patient.id !== patientId));
+      // If the deleted patient is currently selected, clear the selection
+      if (selectedPatient?.id === patientId) {
+        setSelectedPatient(null);
+        setActiveView('patients');
+      }
+    }
   };
 
   const handleNewAppointment = () => {
@@ -90,6 +154,7 @@ const Index = () => {
       case 'patients':
         return (
           <PatientDashboard 
+            patients={patients}
             onStartSession={handleStartSession} 
             onAddPatient={handleAddPatient}
             onViewPatient={handleViewPatient}
@@ -106,6 +171,7 @@ const Index = () => {
           />
         ) : (
           <PatientDashboard 
+            patients={patients}
             onStartSession={handleStartSession} 
             onAddPatient={handleAddPatient}
             onViewPatient={handleViewPatient}
@@ -115,6 +181,23 @@ const Index = () => {
         );
       case 'add-patient':
         return <AddPatient onBack={handleBackToPatients} onSave={handleSavePatient} />;
+      case 'edit-patient':
+        return selectedPatient ? (
+          <AddPatient 
+            patient={selectedPatient}
+            onBack={handleBackToPatients} 
+            onSave={handleSavePatient} 
+          />
+        ) : (
+          <PatientDashboard 
+            patients={patients}
+            onStartSession={handleStartSession} 
+            onAddPatient={handleAddPatient}
+            onViewPatient={handleViewPatient}
+            onEditPatient={handleEditPatient}
+            onDeletePatient={handleDeletePatient}
+          />
+        );
       case 'new-appointment':
         return <NewAppointment onBack={() => setActiveView('appointments')} onSave={() => setActiveView('appointments')} />;
       case 'start-session':
@@ -126,6 +209,7 @@ const Index = () => {
           />
         ) : (
           <PatientDashboard 
+            patients={patients}
             onStartSession={handleStartSession} 
             onAddPatient={handleAddPatient}
             onViewPatient={handleViewPatient}
@@ -142,6 +226,7 @@ const Index = () => {
           />
         ) : (
           <PatientDashboard 
+            patients={patients}
             onStartSession={handleStartSession} 
             onAddPatient={handleAddPatient}
             onViewPatient={handleViewPatient}
@@ -158,6 +243,7 @@ const Index = () => {
       default:
         return (
           <PatientDashboard 
+            patients={patients}
             onStartSession={handleStartSession} 
             onAddPatient={handleAddPatient}
             onViewPatient={handleViewPatient}

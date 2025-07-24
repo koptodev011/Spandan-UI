@@ -7,24 +7,43 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-interface AddPatientProps {
-  onBack: () => void;
-  onSave: (patient: any) => void;
+interface PatientData {
+  id?: string;
+  name: string;
+  age: string | number;
+  gender: string;
+  phone: string;
+  email: string;
+  address: string;
+  emergencyContact: string;
+  medicalHistory: string;
+  currentMedications: string;
+  allergies: string;
+  notes: string;
+  lastSession?: string;
+  sessionType?: 'in-person' | 'remote';
+  totalSessions?: number;
 }
 
-export default function AddPatient({ onBack, onSave }: AddPatientProps) {
-  const [formData, setFormData] = useState({
-    name: '',
-    age: '',
-    gender: '',
-    phone: '',
-    email: '',
-    address: '',
-    emergencyContact: '',
-    medicalHistory: '',
-    currentMedications: '',
-    allergies: '',
-    notes: ''
+interface AddPatientProps {
+  patient?: PatientData;
+  onBack: () => void;
+  onSave: (patient: PatientData) => void;
+}
+
+export default function AddPatient({ patient, onBack, onSave }: AddPatientProps) {
+  const [formData, setFormData] = useState<PatientData>({
+    name: patient?.name || '',
+    age: patient?.age || '',
+    gender: patient?.gender || '',
+    phone: patient?.phone || '',
+    email: patient?.email || '',
+    address: patient?.address || '',
+    emergencyContact: patient?.emergencyContact || '',
+    medicalHistory: patient?.medicalHistory || '',
+    currentMedications: patient?.currentMedications || '',
+    allergies: patient?.allergies || '',
+    notes: patient?.notes || ''
   });
 
   const handleChange = (field: string, value: string) => {
@@ -44,8 +63,12 @@ export default function AddPatient({ onBack, onSave }: AddPatientProps) {
           Back to Patients
         </Button>
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2">Add New Patient</h1>
-          <p className="text-base sm:text-lg text-muted-foreground">Enter patient information</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2">
+            {patient?.id ? 'Edit Patient' : 'Add New Patient'}
+          </h1>
+          <p className="text-base sm:text-lg text-muted-foreground">
+            {patient?.id ? 'Update patient information' : 'Enter patient information'}
+          </p>
         </div>
       </div>
 
